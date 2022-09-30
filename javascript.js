@@ -4,23 +4,6 @@
 let playerScore = 0;
 let computerScore = 0;
 
-
-// Function designed for a single round of rock paper scissors, increments count +1 depending on outcome//
-
-function playRound(playerSelection, computerSelection){
-    if ((playerSelection == "rock" && computerSelection == "scissors") ||
-       (playerSelection == "scissors" && computerSelection == "paper") ||
-       (playerSelection == "paper" && computerSelection == "rock")){
-        playerScore++;
-        return ("You win! " + playerSelection + " beats " + computerSelection + ", the score is Player:" + playerScore + " Computer:" + computerScore);
-       } else if (playerSelection == computerSelection){
-        return "Draw!"
-       } else {
-        computerScore++
-        return ("You lose! " + computerSelection+ ", beats " + playerSelection + " the score is Player:" + playerScore + " Computer:" + computerScore)
-       }
-}
-
 // Function in order to get computer input randomly from an array//
 
 function computerPlay() {
@@ -28,41 +11,91 @@ function computerPlay() {
     return choices[Math.floor(Math.random() * choices.length)]
 }
 
-let computerSelection = computerPlay();
+let computerSelection = '';
+computerSelection = computerPlay();
 
 
-//Prompt in order to get user selection of (Rock, paper, or scissors)//
+const btn1 = document.querySelector("#btn1");
+const btn2 = document.querySelector("#btn2");
+const btn3 = document.querySelector("#btn3");
 
-let playerSelection = prompt("Make your selection, Rock, paper or Scissors").toLowerCase();
 
-//Function that plays a round of rock paper scissors until either CPU or user reaches 5//
+btn1.addEventListener('click', () => {playRound("rock", computerSelection)});
+btn2.addEventListener('click', () => {playRound("paper", computerSelection)});
+btn3.addEventListener('click', () => {playRound("scissors", computerSelection)});
 
-function game(){
+const paragraph = document.querySelector(".content");
+
+
+
+
+
+
+
+// Function designed for a single round of rock paper scissors, increments count +1 depending on outcome//
+
+function playRound(playerSelection, computerSelection){
+    computerSelection = computerPlay();
     
-    while (playerScore < 5 && computerScore < 5){
-        
-        /*Variables redeclared inside while loop in order to get user 
-        input per round and random computer input*/
-        
-        let playerSelection = prompt("Make your selection, Rock, paper or Scissors").toLowerCase();
-        let computerSelection = computerPlay();
-        
-        console.log(playRound(playerSelection, computerSelection));
-        if (playerScore == 5 && computerScore == 5){
-            console.log("Draw! Refresh the page to try again.");
-        } else if (playerScore == 5 && computerScore < 5){
-            console.log("You Win! You Saved the world. Refresh to play again.")
-        } else if (playerScore < 5 && computerScore == 5) {
-            console.log("You lost :( Refresh the page to try again.")
-        }
-    } 
+    if(playerScore == 5 || computerScore == 5){
+        return endGame();
+    }
+    if ((playerSelection == "rock" && computerSelection == "scissors") ||
+       (playerSelection == "scissors" && computerSelection == "paper") ||
+       (playerSelection == "paper" && computerSelection == "rock")){
+        playerScore++;
+        paragraph.textContent = "You win! " + playerSelection + " beats " + computerSelection + ", the score is Player: " + playerScore + " Computer: " + computerScore;
+       } else if (playerSelection == computerSelection){
+        paragraph.textContent = "Draw!";
+       } else {
+        computerScore++
+        paragraph.textContent = "You lose! " + computerSelection+ ", beats " + playerSelection + " the score is Player: " + playerScore + " Computer: " + computerScore;
+       }
 }
-   
+
+
+// Function to display final results and reset game
+
+function endGame(){
+    if (playerScore == 5 && computerScore == 5){
+        paragraph.textContent = "Draw Game! Press any button to play again."
+       reset();
+    } else if (playerScore == 5 && computerScore < 5){
+        paragraph.textContent = "Congratulations you beat the machine! Press any button to play again."
+        reset();
+    } else if (playerScore < 5 && computerScore == 5){
+       paragraph.textContent = "Wow you lost to a computer...Press any button to play again."
+       reset();
+    }
+}
+
+
+    
+
+// Function to reset player and computer scores
+
+function reset(){
+    computerScore = 0;
+    playerScore = 0;
+}
 
 
 
 
-console.log(game());
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
